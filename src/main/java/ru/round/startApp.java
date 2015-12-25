@@ -5,11 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ru.round.fxController.mainController;
+
 
 /**
  * Created by GrishukovVM on 21.12.2015.
  */
 public class startApp extends Application {
+
 
     public static void main(String[] args) {
        System.out.println("Start project");
@@ -18,12 +21,18 @@ public class startApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/mainForm.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainForm.fxml"));
+        Parent root =  (Parent) loader.load();
+        mainController mc = loader.getController();
+        mc.setNativeMenu();
+
         primaryStage.setTitle("BankRound program");
         primaryStage.setResizable(false);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+
 
 
 

@@ -2,15 +2,18 @@ package ru.round.fxController;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.MenuBar;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ru.round.startApp;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.Optional;
@@ -19,13 +22,23 @@ import java.util.ResourceBundle;
 /**
  * Created by GrishukovVM on 21.12.2015.
  */
-public class mainController {
+public class mainController implements Initializable {
 
     public Stage primaryStage;
 
     public Button btnExit;
     public Button bnt1;
     public Button btnOpenFile;
+    public MenuBar mainMenuBar;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("initialize controller");
+        final String os = System.getProperty("os.name");
+        if (os != null && os.startsWith("Mac"))
+            mainMenuBar.useSystemMenuBarProperty().set(true);
+    }
+
 
     public void clickOnbtnExit(ActionEvent actionEvent) {
         Platform.exit();
@@ -42,6 +55,7 @@ public class mainController {
     }
 
     public void clickOnbtnOpenFile(ActionEvent actionEvent) {
+        System.out.printf("click on btn2");
 
 /*swing chooser multi dir*/
         JFileChooser chooser = new JFileChooser();
@@ -56,9 +70,9 @@ public class mainController {
             System.out.println(f.getAbsolutePath());
         }
 
+/*
 
-
-      /*  DirectoryChooser dirChooser = new DirectoryChooser();
+        DirectoryChooser dirChooser = new DirectoryChooser();
         dirChooser.setTitle("Open dir");
         dirChooser.showDialog(primaryStage);
 
@@ -66,7 +80,14 @@ public class mainController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open  File");
        // fileChooser.showOpenDialog(primaryStage);
-        fileChooser.showOpenMultipleDialog(primaryStage);
-*/
+        fileChooser.showOpenMultipleDialog(primaryStage);*/
+
+    }
+
+
+
+    public void setNativeMenu() {
+        btnExit.setText("test");
     }
 }
+
