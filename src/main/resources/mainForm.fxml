@@ -8,7 +8,7 @@
    <children>
       <Button fx:id="btnExit" layoutX="519.0" layoutY="361.0" mnemonicParsing="false" onAction="#clickOnbtnExit" prefHeight="25.0" prefWidth="70.0" text="Exit" />
       <Button fx:id="bnt1" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#ClickOnbtn1" text="Start 1" />
-      <Button fx:id="btnOpenFile" layoutX="203.0" layoutY="361.0" mnemonicParsing="false" onAction="#clickOnbtnOpenFile" text="open File" />
+      <Button fx:id="btnOpenFile" layoutX="203.0" layoutY="361.0" mnemonicParsing="false" onAction="#clickOnbtnOpenFile" text="Обработка !readme!" />
       <MenuBar fx:id="mainMenuBar" layoutY="2.0" prefHeight="25.0" prefWidth="610.0">
         <menus>
           <Menu mnemonicParsing="false" text="Задачи">
