@@ -18,6 +18,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import ru.round.Utils.fileOperations;
+
 
 /**
  * Created by GrishukovVM on 21.12.2015.
@@ -57,7 +59,7 @@ public class mainController implements Initializable {
 
     ///testfgsafdhjsdfm
     public void clickOnbtnOpenFile(ActionEvent actionEvent) {
-        System.out.printf("click on btn2");
+        System.out.printf("Processing readme files for inversion patch");
 
 /*swing chooser multi dir*/
         JFileChooser chooser = new JFileChooser();
@@ -67,18 +69,29 @@ public class mainController implements Initializable {
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         chooser.setAcceptAllFileFilterUsed(false);
         chooser.showOpenDialog(null);
-        File[] files = chooser.getSelectedFiles();
-        for  (File f : files) {
-            System.out.println(f.getAbsolutePath());
+        File[] DirFromReadme = chooser.getSelectedFiles();
+
+        chooser.setDialogTitle("Выбирете каталог, куда будете сохранять");
+        chooser.setMultiSelectionEnabled(false);
+        chooser.showOpenDialog(null);
+        File[] DirToReadme = chooser.getSelectedFiles();
+        for  (File dirFrom : DirFromReadme) {
+            System.out.println(dirFrom.getAbsolutePath());
+            File[] filesToCopy = dirFrom.listFiles();
+            for(File f : filesToCopy) {
+                if (f.isFile()) {
+                   // fileOperations.copyFile(f,DirToReadme[0]);
+                }
+            }
+
         }
 
-/*
 
+
+/*
         DirectoryChooser dirChooser = new DirectoryChooser();
         dirChooser.setTitle("Open dir");
         dirChooser.showDialog(primaryStage);
-
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open  File");
        // fileChooser.showOpenDialog(primaryStage);
