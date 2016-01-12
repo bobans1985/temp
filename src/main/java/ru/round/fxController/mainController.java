@@ -1,5 +1,4 @@
 package ru.round.fxController;
-//test
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -7,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -32,11 +32,14 @@ public class mainController implements Initializable {
     public Button bnt1;
     public Button btnOpenFile;
     public MenuBar mainMenuBar;
+    final String os = System.getProperty("os.name");
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("initialize controller");
-        final String os = System.getProperty("os.name");
+
+        //Если мак - то используем нативное маковское меню
         if (os != null && os.startsWith("Mac"))
             mainMenuBar.useSystemMenuBarProperty().set(true);
     }
@@ -49,7 +52,7 @@ public class mainController implements Initializable {
 
 
     public void ClickOnbtn1(ActionEvent actionEvent) {
-        Alert  alert = new Alert(Alert.AlertType.INFORMATION,"tesxt");
+        Alert  alert = new Alert(AlertType.INFORMATION,"tesxt");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
         }
@@ -57,36 +60,34 @@ public class mainController implements Initializable {
     }
 
 
-    ///testfgsafdhjsdfm
     public void clickOnbtnOpenFile(ActionEvent actionEvent) {
         System.out.printf("Processing readme files for inversion patch");
 
-/*swing chooser multi dir*/
-        JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File("."));
-        chooser.setMultiSelectionEnabled(true);
-        chooser.setDialogTitle("Выбирете каталоги, из которых нужно выдернуть документации");
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        chooser.setAcceptAllFileFilterUsed(false);
-        chooser.showOpenDialog(null);
-        File[] DirFromReadme = chooser.getSelectedFiles();
+        if (os != null && !os.startsWith("Mac")) {
+            /*swing chooser multi dir*/
+            JFileChooser chooser = new JFileChooser();
+            chooser.setCurrentDirectory(new java.io.File("."));
+            chooser.setMultiSelectionEnabled(true);
+            chooser.setDialogTitle("Выбирете каталоги, из которых нужно выдернуть документации");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setAcceptAllFileFilterUsed(false);
+            chooser.showOpenDialog(null);
+            File[] DirFromReadme = chooser.getSelectedFiles();
 
-        chooser.setDialogTitle("Выбирете каталог, куда будете сохранять");
-        chooser.setMultiSelectionEnabled(false);
-        chooser.showOpenDialog(null);
-        File[] DirToReadme = chooser.getSelectedFiles();
-        for  (File dirFrom : DirFromReadme) {
-            System.out.println(dirFrom.getAbsolutePath());
-            File[] filesToCopy = dirFrom.listFiles();
-            for(File f : filesToCopy) {
-                if (f.isFile()) {
-                   // fileOperations.copyFile(f,DirToReadme[0]);
+            chooser.setDialogTitle("Выбирете каталог, куда будете сохранять");
+            chooser.setMultiSelectionEnabled(false);
+            chooser.showOpenDialog(null);
+            File[] DirToReadme = chooser.getSelectedFiles();
+            for (File dirFrom : DirFromReadme) {
+                System.out.println(dirFrom.getAbsolutePath());
+                File[] filesToCopy = dirFrom.listFiles();
+                for (File f : filesToCopy) {
+                    if (f.isFile()) {
+                        // fileOperations.copyFile(f,DirToReadme[0]);
+                    }
                 }
+
             }
-
-        }
-
-
 
 /*
         DirectoryChooser dirChooser = new DirectoryChooser();
@@ -96,6 +97,14 @@ public class mainController implements Initializable {
         fileChooser.setTitle("Open  File");
        // fileChooser.showOpenDialog(primaryStage);
         fileChooser.showOpenMultipleDialog(primaryStage);*/
+
+
+        } else {
+            Alert  alert = new Alert(AlertType.ERROR,"This function not work in Mac OS");
+            //alert.setHeaderText("Error");
+            //alert.setTitle("Error");
+            alert.show();
+        }
 
     }
 

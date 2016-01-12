@@ -13,7 +13,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="Задачи">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Обработка документации" />
+                  <MenuItem mnemonicParsing="false" onAction="#clickOnbtnOpenFile" text="Обработка документации" />
               <MenuItem fx:id="mainMenuBarExit" mnemonicParsing="false" onAction="#clickOnbtnExit" text="Выход" />
             </items>
           </Menu>
