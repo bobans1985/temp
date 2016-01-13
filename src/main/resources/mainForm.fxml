@@ -13,11 +13,14 @@
         <menus>
           <Menu mnemonicParsing="false" text="Задачи">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#clickOnbtnOpenFile" text="Обработка документации" />
+                  <MenuItem fx:id="mainMenuBarStage1" mnemonicParsing="false" onAction="#clickOnbtnOpenFile" text="Обработка документации" />
               <MenuItem fx:id="mainMenuBarExit" mnemonicParsing="false" onAction="#clickOnbtnExit" text="Выход" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="?" />
+          <Menu mnemonicParsing="false" text="?">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#ClickOnMenuAbout" text="О программе" />
+               </items></Menu>
         </menus>
       </MenuBar>
    </children>
