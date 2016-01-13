@@ -18,6 +18,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
+
 import ru.round.Utils.fileOperations;
 
 
@@ -100,12 +102,21 @@ public class mainController implements Initializable {
     }
 
 
-    public void clickOnbtnOpenFile(ActionEvent actionEvent) {
+    public void clickOnbtnOpenFile(ActionEvent actionEvent) throws Exception {
         System.out.printf("Processing readme files for inversion patch");
+        Preferences userPrefs = Preferences.userNodeForPackage(mainController.class);
+        userPrefs = Preferences.userRoot().node("BankRound");
+        userPrefs.put("test2","text");
+        userPrefs.putLong("test1",2);
+
 
         if (os != null && !os.startsWith("Mac")) {
             /*swing chooser multi dir*/
+
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
             JFileChooser chooser = new JFileChooser();
+
             chooser.setCurrentDirectory(new java.io.File("."));
             chooser.setMultiSelectionEnabled(true);
             chooser.setDialogTitle("Выбирете каталоги, из которых нужно выдернуть документации");
