@@ -99,6 +99,65 @@ public class mainController implements Initializable {
         if (result.isPresent() && result.get() == ButtonType.OK) {
         }
         System.out.printf("click on btn1");
+        System.out.printf("Processing readme files for inversion patch");
+        PrefSettings pref = new PrefSettings();
+
+
+//---------------------------------//---------------------------------//---------------------------------
+
+        // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JFileChooser chooser = new JFileChooser(pref.GetDirFromReadme());
+                chooser.setMultiSelectionEnabled(true);
+                chooser.setDialogTitle("Выбирете каталоги, из которых нужно выдернуть документации");
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                chooser.setAcceptAllFileFilterUsed(false);
+
+                chooser.showOpenDialog(null);
+                File[] DirFromReadme = chooser.getSelectedFiles();
+                pref.SetDirFromReadme(chooser);
+
+                chooser.setCurrentDirectory(new File(pref.GetDirToReadme()));
+                chooser.setDialogTitle("Выбирете каталог, куда будете сохранять");
+                chooser.setMultiSelectionEnabled(false);
+                chooser.showOpenDialog(null);
+
+                if (DirFromReadme != null &&  chooser.getSelectedFile()!=null) {
+                    String DirToReadme = chooser.getSelectedFile().getAbsolutePath().toString();
+                    pref.SetDirToReadme(chooser);
+                    System.out.println(DirToReadme);
+
+
+                    for (File dirFrom : DirFromReadme) {
+                        File[] dirsInFolder = dirFrom.listFiles();
+                        for (File dirInFolder : dirsInFolder) {
+                            if (dirInFolder.getName().toUpperCase().contains("README")) {
+                                //System.out.println(dirInFolder.getName());
+                                File[] FileInFolder = dirInFolder.listFiles();
+                                for (File f : FileInFolder) {
+                                    if (f.isFile()) {
+                                        File destFile = new File(DirToReadme+"/"+dirFrom.getName()+"_" +f.getName());
+                                        System.out.println("file = " + destFile.toString());
+                                        try{
+                                            fileOperations.copyFile(f, destFile);
+                                        } catch(Exception e){
+                                            System.out.println("test");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+
+            }
+        });
+        //---------------------------------//---------------------------------//---------------------------------
+
     }
 
 
