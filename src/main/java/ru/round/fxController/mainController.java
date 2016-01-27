@@ -1,6 +1,7 @@
 package ru.round.fxController;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import ru.round.Utils.PrefSettings;
 import ru.round.startApp;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -38,7 +39,7 @@ public class mainController implements Initializable {
     private Stage dialogStage;
 
 
-    @Override
+
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("initialize controller");
 
@@ -83,7 +84,6 @@ public class mainController implements Initializable {
 
 
         btn_close.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
             public void handle(ActionEvent arg0) {
                 dialogStage.hide();
             }
@@ -104,40 +104,53 @@ public class mainController implements Initializable {
 
     public void clickOnbtnOpenFile(ActionEvent actionEvent) throws Exception {
         System.out.printf("Processing readme files for inversion patch");
-        Preferences userPrefs = Preferences.userNodeForPackage(mainController.class);
-        userPrefs = Preferences.userRoot().node("BankRound");
-        userPrefs.put("test2","text");
-        userPrefs.putLong("test1",2);
+        PrefSettings pref = new PrefSettings();
+
 
 
         if (os != null && !os.startsWith("Mac")) {
             /*swing chooser multi dir*/
 
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-            JFileChooser chooser = new JFileChooser();
+            JFileChooser chooser = new JFileChooser(pref.GetDirFromReadme());
 
-            chooser.setCurrentDirectory(new java.io.File("."));
+
             chooser.setMultiSelectionEnabled(true);
             chooser.setDialogTitle("Выбирете каталоги, из которых нужно выдернуть документации");
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             chooser.setAcceptAllFileFilterUsed(false);
             chooser.showOpenDialog(null);
             File[] DirFromReadme = chooser.getSelectedFiles();
+            pref.SetDirFromReadme(chooser);
 
+            chooser.setCurrentDirectory(new File(pref.GetDirToReadme()) );
             chooser.setDialogTitle("Выбирете каталог, куда будете сохранять");
             chooser.setMultiSelectionEnabled(false);
             chooser.showOpenDialog(null);
-            File[] DirToReadme = chooser.getSelectedFiles();
-            for (File dirFrom : DirFromReadme) {
-                System.out.println(dirFrom.getAbsolutePath());
-                File[] filesToCopy = dirFrom.listFiles();
-                for (File f : filesToCopy) {
-                    if (f.isFile()) {
-                        // fileOperations.copyFile(f,DirToReadme[0]);
-                    }
-                }
 
+            if (DirFromReadme != null &&  chooser.getSelectedFile()!=null) {
+            String DirToReadme = chooser.getSelectedFile().getAbsolutePath().toString();
+            pref.SetDirToReadme(chooser);
+            System.out.println(DirToReadme);
+
+
+                for (File dirFrom : DirFromReadme) {
+                    File[] dirsInFolder = dirFrom.listFiles();
+                    for (File dirInFolder : dirsInFolder) {
+                        if (dirInFolder.getName().toUpperCase().contains("README")) {
+                            //System.out.println(dirInFolder.getName());
+                            File[] FileInFolder = dirInFolder.listFiles();
+                            for (File f : FileInFolder) {
+                                if (f.isFile()) {
+                                    File destFile = new File(DirToReadme+"/"+dirFrom.getName()+"_" +f.getName());
+                                    System.out.println("file = " + destFile.toString());
+                                    fileOperations.copyFile(f, destFile);
+                                }
+                            }
+                        }
+                    }
+
+                }
             }
 
 /*
@@ -148,6 +161,7 @@ public class mainController implements Initializable {
         fileChooser.setTitle("Open  File");
        // fileChooser.showOpenDialog(primaryStage);
         fileChooser.showOpenMultipleDialog(primaryStage);*/
+
 
 
         } else {
