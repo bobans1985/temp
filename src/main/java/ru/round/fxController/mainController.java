@@ -1,7 +1,12 @@
 package ru.round.fxController;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import ru.round.Utils.PrefSettings;
+import ru.round.Utils.undecorator.Undecorator;
+import ru.round.Utils.undecorator.UndecoratorScene;
 import ru.round.startApp;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,10 +21,10 @@ import javafx.scene.layout.BorderPane;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
 
 import ru.round.Utils.fileOperations;
 
@@ -93,70 +98,24 @@ public class mainController implements Initializable {
     }
 
 
-    public void ClickOnbtn1(ActionEvent actionEvent) {
+    public void ClickOnbtn1(ActionEvent actionEvent) throws Exception {
         Alert alert = new Alert(AlertType.INFORMATION,"tesxt");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
         }
         System.out.printf("click on btn1");
         System.out.printf("Processing readme files for inversion patch");
-        PrefSettings pref = new PrefSettings();
 
 
 //---------------------------------//---------------------------------//---------------------------------
-
-        // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         SwingUtilities.invokeLater(new Runnable() {
-            @Override
+
             public void run() {
-                JFileChooser chooser = new JFileChooser(pref.GetDirFromReadme());
-                chooser.setMultiSelectionEnabled(true);
-                chooser.setDialogTitle("Выбирете каталоги, из которых нужно выдернуть документации");
-                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                chooser.setAcceptAllFileFilterUsed(false);
-
-                chooser.showOpenDialog(null);
-                File[] DirFromReadme = chooser.getSelectedFiles();
-                pref.SetDirFromReadme(chooser);
-
-                chooser.setCurrentDirectory(new File(pref.GetDirToReadme()));
-                chooser.setDialogTitle("Выбирете каталог, куда будете сохранять");
-                chooser.setMultiSelectionEnabled(false);
-                chooser.showOpenDialog(null);
-
-                if (DirFromReadme != null &&  chooser.getSelectedFile()!=null) {
-                    String DirToReadme = chooser.getSelectedFile().getAbsolutePath().toString();
-                    pref.SetDirToReadme(chooser);
-                    System.out.println(DirToReadme);
-
-
-                    for (File dirFrom : DirFromReadme) {
-                        File[] dirsInFolder = dirFrom.listFiles();
-                        for (File dirInFolder : dirsInFolder) {
-                            if (dirInFolder.getName().toUpperCase().contains("README")) {
-                                //System.out.println(dirInFolder.getName());
-                                File[] FileInFolder = dirInFolder.listFiles();
-                                for (File f : FileInFolder) {
-                                    if (f.isFile()) {
-                                        File destFile = new File(DirToReadme+"/"+dirFrom.getName()+"_" +f.getName());
-                                        System.out.println("file = " + destFile.toString());
-                                        try{
-                                            fileOperations.copyFile(f, destFile);
-                                        } catch(Exception e){
-                                            System.out.println("test");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                }
-
-
+                JOptionPane.showMessageDialog(null, "Swing alert in invokeLater");
+                //JOptionPane.setModalityType(Dialog.ModalityType.DOCUMENT_MODAL);
             }
         });
-        //---------------------------------//---------------------------------//---------------------------------
+//---------------------------------//---------------------------------//---------------------------------
 
     }
 
@@ -170,58 +129,55 @@ public class mainController implements Initializable {
         if (os != null && !os.startsWith("Mac")) {
             /*swing chooser multi dir*/
 
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            JFileChooser chooser = new JFileChooser(pref.GetDirFromReadme());
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                JFileChooser chooser = new JFileChooser(pref.GetDirFromReadme());
 
 
-            chooser.setMultiSelectionEnabled(true);
-            chooser.setDialogTitle("Выбирете каталоги, из которых нужно выдернуть документации");
-            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            chooser.setAcceptAllFileFilterUsed(false);
-            chooser.showOpenDialog(null);
-            File[] DirFromReadme = chooser.getSelectedFiles();
-            pref.SetDirFromReadme(chooser);
+                chooser.setMultiSelectionEnabled(true);
+                chooser.setDialogTitle("Выбирете каталоги, из которых нужно выдернуть документации");
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                chooser.setAcceptAllFileFilterUsed(false);
+                chooser.showOpenDialog(null);
+                File[] DirFromReadme = chooser.getSelectedFiles();
+                pref.SetDirFromReadme(chooser);
 
-            chooser.setCurrentDirectory(new File(pref.GetDirToReadme()) );
-            chooser.setDialogTitle("Выбирете каталог, куда будете сохранять");
-            chooser.setMultiSelectionEnabled(false);
-            chooser.showOpenDialog(null);
+                chooser.setCurrentDirectory(new File(pref.GetDirToReadme()));
+                chooser.setDialogTitle("Выбирете каталог, куда будете сохранять");
+                chooser.setMultiSelectionEnabled(false);
+                chooser.showOpenDialog(null);
 
-            if (DirFromReadme != null &&  chooser.getSelectedFile()!=null) {
-            String DirToReadme = chooser.getSelectedFile().getAbsolutePath().toString();
-            pref.SetDirToReadme(chooser);
-            System.out.println(DirToReadme);
+                if (DirFromReadme != null && chooser.getSelectedFile() != null) {
+                    String DirToReadme = chooser.getSelectedFile().getAbsolutePath().toString();
+                    pref.SetDirToReadme(chooser);
+                    System.out.println(DirToReadme);
 
 
-                for (File dirFrom : DirFromReadme) {
-                    File[] dirsInFolder = dirFrom.listFiles();
-                    for (File dirInFolder : dirsInFolder) {
-                        if (dirInFolder.getName().toUpperCase().contains("README")) {
-                            //System.out.println(dirInFolder.getName());
-                            File[] FileInFolder = dirInFolder.listFiles();
-                            for (File f : FileInFolder) {
-                                if (f.isFile()) {
-                                    File destFile = new File(DirToReadme+"/"+dirFrom.getName()+"_" +f.getName());
-                                    System.out.println("file = " + destFile.toString());
-                                    fileOperations.copyFile(f, destFile);
+                    for (File dirFrom : DirFromReadme) {
+                        File[] dirsInFolder = dirFrom.listFiles();
+                        for (File dirInFolder : dirsInFolder) {
+                            if (dirInFolder.getName().toUpperCase().contains("README")) {
+                                //System.out.println(dirInFolder.getName());
+                                File[] FileInFolder = dirInFolder.listFiles();
+                                for (File f : FileInFolder) {
+                                    if (f.isFile()) {
+                                        File destFile = new File(DirToReadme + "/" + dirFrom.getName() + "_" + f.getName());
+                                        System.out.println("file = " + destFile.toString());
+                                        fileOperations.copyFile(f, destFile);
+                                    }
                                 }
                             }
                         }
+
                     }
+                    Alert  alert = new Alert(AlertType.INFORMATION,"Обработка прошла успешно");alert.show();
 
-                }
+                } else throw new IOException("Folder is not marked");
+
+            } catch (Exception ex) {
+                Alert  alert = new Alert(AlertType.ERROR,"Произошла непредвиденная ошибка: " + ex);
+                alert.show();
             }
-
-/*
-        DirectoryChooser dirChooser = new DirectoryChooser();
-        dirChooser.setTitle("Open dir");
-        dirChooser.showDialog(primaryStage);
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open  File");
-       // fileChooser.showOpenDialog(primaryStage);
-        fileChooser.showOpenMultipleDialog(primaryStage);*/
-
-
 
         } else {
             Alert  alert = new Alert(AlertType.ERROR,"This function not work in Mac OS");
@@ -233,9 +189,27 @@ public class mainController implements Initializable {
     }
 
 
+    public void clickOnbtnBase64Converter(ActionEvent actionEvent) throws Exception{
+       System.out.println("Click on clickOnbtnBase64Converter");
+
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/base64Converter.fxml"));
+        Region root = (Region) loader.load();
+        base64ConverterController mc = loader.getController();
+        Stage stage = new Stage();
+        stage.setResizable(false);
+        UndecoratorScene scene = new UndecoratorScene(stage,root);
+        stage.setScene(scene);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+
+    }
+
 
     public void setNativeMenu() {
         btnExit.setText("test");
     }
+
+
 }
 
