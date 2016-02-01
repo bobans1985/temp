@@ -10,8 +10,8 @@
       <Button fx:id="base64Converter" layoutX="765.0" layoutY="499.0" mnemonicParsing="false" onAction="#clickOnbtnExit" text="Закрыть" />
       <TextArea fx:id="TextBase64Box" layoutX="14.0" layoutY="44.0" prefHeight="439.0" prefWidth="367.0" />
       <TextArea fx:id="TextPlainBox" layoutX="462.0" layoutY="44.0" prefHeight="439.0" prefWidth="384.0" />
-      <Label layoutX="14.0" layoutY="27.0" text="Text in Base64" />
-      <Label layoutX="462.0" layoutY="27.0" text="Plain Text" />
+      <Label layoutX="462.0" layoutY="27.0" text="Text in Base64" />
+      <Label layoutX="14.0" layoutY="27.0" text="Plain Text" />
       <Button fx:id="ToPlainTextBtn" layoutX="397.0" layoutY="167.0" mnemonicParsing="false" onAction="#ClickOnBtnToPlainText" text="&gt;&gt;&gt;" />
       <Button fx:id="ToBase64Btn" layoutX="397.0" layoutY="208.0" mnemonicParsing="false" onAction="#ClickOnBtnToBase64" text="&lt;&lt;&lt;" />
    </children>
