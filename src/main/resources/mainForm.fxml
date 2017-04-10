@@ -7,7 +7,7 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="71.0" prefWidth="600.0" stylesheets="@css/DarkTheme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.round.fxController.mainController">
    <children>
       <Button fx:id="btnExit" layoutX="516.0" layoutY="47.0" mnemonicParsing="false" onAction="#clickOnbtnExit" prefHeight="25.0" prefWidth="70.0" text="Exit" />
-      <Button fx:id="bnt1" layoutX="14.0" layoutY="47.0" mnemonicParsing="false" onAction="#ClickOnbtn1" text="Start 1" />
+      <Button fx:id="bnt1" layoutX="14.0" layoutY="47.0" mnemonicParsing="false" onAction="#ClickOnbtn1" text="Start 1"  visible="false"/>
       <Button fx:id="btnOpenFile" layoutX="84.0" layoutY="47.0" mnemonicParsing="false" onAction="#clickOnbtnOpenFile" text="Обработка !readme!" />
       <MenuBar fx:id="mainMenuBar" prefHeight="28.0">
         <menus>
